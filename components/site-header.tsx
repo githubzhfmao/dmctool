@@ -62,26 +62,11 @@ export function SiteHeader() {
           <Image src={dmc} width={100} alt={""} />
 
             <nav className="flex items-center space-x-1">
-              {/* <Link
-                href={siteConfig.links.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
-                >
-                  <Icons.gitHub className="h-5 w-5" />
-                  <span className="sr-only">GitHub</span>
-                </div>
-              </Link> */}
-              <ThemeToggle />
+              {/* <ThemeToggle /> */}
               {account ? (
-                <div className="flex items-center justify-start space-x-2 h-8 w-44 bg-[#f7b34e] rounded-full text-base pl-3 pr-3 text-black">
+                <div className="flex items-center justify-start space-x-2 h-8 w-44 bg-[#f7b34e] rounded-full text-base pl-3 pr-3 ">
                   <div className="flex items-center justify-center bg-white rounded-full h-6 w-6"><Image src={logined} width={14} alt={""} /></div>
-                  <span>{account}</span>
+                  <span className="text-black">{account}</span>
                 </div>
               ) : 
               <div onClick={() => handleLoginIronman()} className="flex items-center justify-center space-x-2 h-8 w-44 bg-[#2e2e2e] rounded-full text-base">
