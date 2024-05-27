@@ -13,6 +13,10 @@ import { chainConfig } from "@/config/chain"
 import { AppProvider } from "@/components/login-account-provider"
 import { useToast } from "@/components/ui/use-toast"
 import { isMobile } from "@/lib/utils";
+import dmc from "../public/dmc.png"
+import wallet from "../public/wallet.png"
+import Image from 'next/image';
+import logined from "../public/logined.png"
 
 export function SiteHeader() {
   const { toast } = useToast()
@@ -50,13 +54,15 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
+    <header className="sticky top-0 z-40 w-full bg-background">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <AppProvider value={account}>
-          <MainNav items={siteConfig.mainNav} />
+          <MainNav />
           <div className="flex flex-1 items-center justify-end space-x-4">
+          <Image src={dmc} width={100} alt={""} />
+
             <nav className="flex items-center space-x-1">
-              <Link
+              {/* <Link
                 href={siteConfig.links.github}
                 target="_blank"
                 rel="noreferrer"
@@ -70,21 +76,20 @@ export function SiteHeader() {
                   <Icons.gitHub className="h-5 w-5" />
                   <span className="sr-only">GitHub</span>
                 </div>
-              </Link>
+              </Link> */}
               <ThemeToggle />
               {account ? (
-                <div>
-                  {account}
-                  <Button size="sm" className="ml-2" onClick={() => {
-                    setAccount('')
-                    logoutIronman()
-                  }}>
-                    Log out
-                  </Button>
+                <div className="flex items-center justify-start space-x-2 h-8 w-44 bg-[#f7b34e] rounded-full text-base pl-3 pr-3 text-black">
+                  <div className="flex items-center justify-center bg-white rounded-full h-6 w-6"><Image src={logined} width={14} alt={""} /></div>
+                  <span>{account}</span>
                 </div>
-              ) : <Button size="sm" onClick={() => handleLoginIronman()}>
-                Login
-              </Button>}
+              ) : 
+              <div onClick={() => handleLoginIronman()} className="flex items-center justify-center space-x-2 h-8 w-44 bg-[#2e2e2e] rounded-full text-base">
+                <Image src={wallet} width={22} alt={""} />
+                <span>Connect Wallet</span>
+              </div>}
+
+              
             </nav>
           </div>
         </AppProvider>

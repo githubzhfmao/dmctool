@@ -10,14 +10,19 @@ import { useRouter, usePathname } from 'next/navigation';
 import BigNumber from "bignumber.js"
 import logo from "../public/logo.png";
 import Image from 'next/image';
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import { ChevronDown } from 'lucide-react';
+import classNames from 'classnames';
+import '@/styles/main-nav.css'
+
 
 interface MainNavProps {
   items?: NavItem[]
 }
+
 export function MainNav({ items }: MainNavProps) {
   const router = useRouter()
   const [activeItem, setActiveItem] = useState('Home');
-  const [searchText, setSearchText] = useState('');
   const pathname = usePathname()
 
   useEffect(() => {
@@ -25,59 +30,56 @@ export function MainNav({ items }: MainNavProps) {
     setActiveItem(path || 'home')
   }, [pathname])
 
-  const handleEnterPress = (event: any) => {
-    if (event.keyCode === 13) {
-      if (new BigNumber(searchText).isInteger() && searchText.length !== 12) {
-        // block
-        router.push(`/block-info/${searchText}`)
-      } else if (searchText.length === 64) {
-        // trx
-        router.push(`/trx-info/${searchText}`)
-      } else {
-        // account
-        router.push(`/resources/${searchText}`)
-      }
-    }
-  }
+  const menuItem = (
+    <div className="flex">
+      <NavigationMenu.Item className="relative pr-10 pt-4">
+        <NavigationMenu.Trigger className="flex font-bold text-base">
+          DMC Info<ChevronDown className="ml-2 mt-1" size="16px" aria-hidden />
+        </NavigationMenu.Trigger>
+        <NavigationMenu.Content className="absolute text-sm bg-stone-800 px-5 pt-3 mt-5 pb-5 w-40 left-200">
+          <ul className="pt-2 grid gap-y-3">
+            <li>Fortune List</li>
+            <li>Release Speed</li>
+            <li>Monitoring</li>
+            <li>PST Staking Price</li>
+            <li>Staking RSI bonus</li>
+            <li>RSI/DMC Price</li>
+          </ul>
+        </NavigationMenu.Content>
+      </NavigationMenu.Item>
+      
+      <NavigationMenu.Item className="relative pr-10 pt-4">
+        <NavigationMenu.Trigger className="flex font-bold text-base">
+        Market Data<ChevronDown className="ml-2 mt-1" size="16px" aria-hidden />
+        </NavigationMenu.Trigger>
+        <NavigationMenu.Content className="absolute text-sm bg-stone-800 px-5 pt-3 mt-5 pb-5 w-40 left-200">
+          <ul className="pt-2 grid gap-y-3">
+            <li>Dex Pool</li>
+            <li>Price</li>
+          </ul>
+        </NavigationMenu.Content>
+      </NavigationMenu.Item>
+
+      <NavigationMenu.Item className="relative pr-10 pt-4">
+        <NavigationMenu.Link className="flex font-bold text-base">
+          About Us
+        </NavigationMenu.Link>
+      </NavigationMenu.Item>
+    </div>
+  )
+
+
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Image src={logo} width={120} alt={""} />
+        <Image src={logo} width={130} alt={""} />
       </Link>
-      {items?.length ? (
-        <nav className="hidden gap-6 md:flex">
-          {items?.map(
-            (item, index) =>
-              item.href && (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center text-lg font-semibold text-muted-foreground sm:text-sm",
-                    item.disabled && "cursor-not-allowed opacity-80",
-                    activeItem === item?.title?.toLocaleLowerCase() && "text-2xl font-bold text-primary"
-                  )}
-                  onClick={() => {
-                    setActiveItem(item.title)
-                  }}
-                >
-                  {item.title}
-                </Link>
-              )
-          )}
-        </nav>
-      ) : null}
-      <Input
-        value={searchText}
-        type="search"
-        placeholder="Input Account / Trx / Block"
-        className="h-9 xs:w-[200px] md:w-[300px] lg:w-[300px]"
-        // className={`h-9 md:w-[100px] lg:w-[300px] ${searchTextFocus && 'border-0'}`}
-        // onFocus={() => setSearchTextFocus(true)}
-        // onBlur={() => setSearchTextFocus(false)}
-        onKeyDown={handleEnterPress}
-        onChange={(e) => { setSearchText(e?.target?.value?.trim()) }}
-      />
+      <NavigationMenu.Root className=" flex justify-center ">
+        <NavigationMenu.List className="flex justify-center">
+          {menuItem}
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
+
     </div>
   )
 }
