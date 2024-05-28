@@ -59,7 +59,7 @@ export function SiteHeader() {
         <AppProvider value={account}>
           <MainNav />
           <div className="flex flex-1 items-center justify-end space-x-4">
-          <Image src={dmc} width={100} alt={""} />
+          <Image src={dmc} width={60} alt={""} />
 
             <nav className="flex items-center space-x-1">
               {/* <ThemeToggle /> */}
