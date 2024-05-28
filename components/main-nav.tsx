@@ -21,6 +21,7 @@ interface MainNavProps {
 }
 
 export function MainNav({ items }: MainNavProps) {
+  debugger
   const router = useRouter()
   const [activeItem, setActiveItem] = useState('Home');
   const pathname = usePathname()
@@ -38,12 +39,54 @@ export function MainNav({ items }: MainNavProps) {
         </NavigationMenu.Trigger>
         <NavigationMenu.Content className="absolute text-sm bg-stone-800 px-5 pt-3 mt-5 pb-5 w-40 left-200">
           <ul className="pt-2 grid gap-y-3">
-            <li>Fortune List</li>
-            <li>Release Speed</li>
-            <li>Monitoring</li>
-            <li>PST Staking Price</li>
-            <li>Staking RSI bonus</li>
-            <li>RSI/DMC Price</li>
+            <li>
+              <Link href='FortuneList' onClick={() => {
+                  setActiveItem('Fortune List')
+                }}
+              >
+                Fortune List
+              </Link>
+            </li>
+            <li>
+              <Link href='ReleaseSpeed' onClick={() => {
+                  setActiveItem('Release Speed')
+                }}
+              >
+                Release Speed
+              </Link>
+            </li>
+            <li>
+              <Link href='monitoring-list' onClick={() => {
+                  setActiveItem('Monitoring')
+                }}
+              >
+                Monitoring
+              </Link>
+            </li>
+            <li>
+              <Link href='PSTStakingPrice' onClick={() => {
+                  setActiveItem('PST Staking Price')
+                }}
+              >
+                PST Staking Price
+              </Link>
+            </li>
+            <li>
+              <Link href='StakingRSIbonus' onClick={() => {
+                  setActiveItem('Staking RSI bonus')
+                }}
+              >
+                Staking RSI bonus
+              </Link>
+            </li>
+            <li>
+              <Link href='RSIDMCPrice' onClick={() => {
+                  setActiveItem('RSI/DMC Price')
+                }}
+              >
+                RSI/DMC Price
+              </Link>
+            </li>
           </ul>
         </NavigationMenu.Content>
       </NavigationMenu.Item>
