@@ -11,7 +11,7 @@ import {
 import { gqlReq } from '@/services/index';
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
-import { PageTable } from "@/components/page-table";
+import { SampleTable } from "@/components/sample-table";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input"
@@ -33,115 +33,24 @@ export default function MonitoringList() {
   const router = useRouter();
   const { toast } = useToast()
   const [dataList, setDataList] = useState(Array<any>)
-  const [pageCount, setPageCount] = useState<number>(1)
   const [loading, setLoading] = useState(true)
   const [pageIndex, setPageIndex] = useState(0)
-  const [pageSize, setPageSize] = useState(10)
   const [searchText, setSearchText] = useState('');
-  const [tablePageIndex, setTablePageIndex] = useState<any>(undefined)
 
   const getMonitoringData = (searchTextLocal: string,) => {
     setLoading(true)
-    let where = {}
-    if (searchTextLocal) {
-      if (searchTextLocal.length === 12) {
-        where = {
-          and: [
-            {
-              miner_id: {
-                eq: searchTextLocal
-              }
-            }
-          ]
-        }
-      } else {
-        where = {
-          or: [
-            {
-              id: {
-                eq: searchTextLocal
-              }
-            },
-            {
-              miner_id: {
-                eq: searchTextLocal
-              }
-            }
-          ]
-        }
-      }
+    setLoading(false)
+    const res = [{address:'datamall', id: 1},{address:'datamall', id: 2}]
+    if (res && res.length > 0) {
+      setDataList(res)
+    } else {
+      setDataList([])
     }
-    gqlReq('order').count({
-      where,
-      order: "-created_time",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res?.data?.count_order) {
-          setPageCount(Math.ceil(res?.data?.count_order / pageSize))
-        }
-      })
-    gqlReq('order').find({
-      where,
-      skip: pageIndex * pageSize,
-      limit: pageSize,
-      order: "-created_time"
-    }, `
-    {
-      id
-      user{
-          id
-      }
-      miner{
-          id
-      }
-      bill{
-          id
-      }
-      created_time
-      epoch
-      user_pledge_amount
-      miner_lock_pst_amount
-      miner_lock_dmc_amount
-      price_amount
-      settlement_pledge_amount
-      lock_pledge_amount
-      state
-      deliver_start_date
-      latest_settlement_date
-      miner_lock_rsi_amount
-      miner_rsi_amount
-      user_rsi_amount
-      deposit_amount
-      deposit_valid
-      cancel_date
-      createdAt
-  }
-    `)
-      .then((res) => res.json())
-      .then((data: any) => {
-        setLoading(false)
-        const res = data?.data?.find_order
-        if (res && res.length > 0) {
-          setDataList(res)
-        } else {
-          setDataList([])
-        }
-      }).catch((error: any) => {
-        setLoading(false)
-        toast({
-          variant: "destructive",
-          title: "Something went wrong",
-          description: error?.message || "Please try again later.",
-        })
-      })
   }
 
   const handleEnterPress = (event: any) => {
     if (event.keyCode === 13) {
-      setPageIndex(0)
       getMonitoringData(searchText)
-      setTablePageIndex(0)
     }
   }
 
@@ -174,97 +83,41 @@ export default function MonitoringList() {
 
   const columns: any[] = [
     {
-      accessorKey: "id",
-      header: "Order Id",
-    },
-    {
-      accessorKey: "miner",
-      header: "Miner",
+      accessorKey: "address",
+      header: "Monitoring wallet",
       cell: ({ row }: RowTypes) => {
         return (
           <Button
             variant="link"
             className="pl-0"
-            onClick={() => router.push(`/resources/${row.getValue("miner")?.id}`)}
+            onClick={() => router.push(`/resources/${row.getValue("address")}`)}
           >
-            {row.getValue("miner")?.id}
+            {row.getValue("address")}
           </Button>
         )
       }
-    },
-    {
-      accessorKey: "user",
-      header: "User",
-      cell: ({ row }: RowTypes) => {
-        return (
-          <Button
-            variant="link"
-            className="pl-0"
-            onClick={() => router.push(`/resources/${row.getValue("user")?.id}`)}
-          >
-            {row.getValue("user")?.id}
-          </Button>
-        )
-      }
-    },
-    {
-      accessorKey: "price_amount",
-      header: "Price (DMC)",
-      cell: ({ row }: any) => numberToThousands(new BigNumber(row.getValue("price_amount")).div(row.getValue("miner_lock_pst_amount")).toFixed(4, 1))
-    },
-    {
-      accessorKey: "miner_lock_pst_amount",
-      header: "Amount (PST)",
-      cell: ({ row }: RowTypes) => numberToThousands(row.getValue("miner_lock_pst_amount"))
-    },
-    // {
-    //   accessorKey: "miner_rsi_amount",
-    //   header: "Income",
-    // },
-    {
-      accessorKey: "state",
-      header: "State",
-      cell: ({ row }: RowTypes) => renderOrderState(row.getValue("state"))
-    },
-    {
-      accessorKey: "created_time",
-      header: "Created Time",
-      cell: ({ row }: RowTypes) => dayjs(row.getValue("created_time")).format("MMM-DD-YYYY hh:mm:ss A")
-    },
+    }
   ]
   return (
     <section className="xs:w-screen sm:w-auto">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <div className="flex flex-row items-center justify-center">
-            <LayoutList className="mr-2 text-xl" />
-            <CardTitle className="text-xl">
-              Monitoring Lists
-            </CardTitle>
-          </div>
           <Input
             className="h-9 xs:w-[200px] md:w-[300px] lg:w-[300px]"
             value={searchText}
             type="search"
-            placeholder="Input Order Id or Miner Id"
+            placeholder="Search For An Account"
             onKeyDown={handleEnterPress}
             onChange={(e) => {
-              setPageIndex(0)
               setSearchText(e?.target?.value?.trim())
             }}
           />
         </CardHeader>
         <CardContent>
-          <PageTable
-            tablePageIndex={tablePageIndex}
-            pageCount={pageCount}
+          <SampleTable
             loading={loading}
             columns={columns}
             data={dataList}
-            clickIndexPage={(index: number) => {
-              setPageIndex(index)
-              setTablePageIndex(undefined)
-            }}
           />
         </CardContent>
       </Card>
