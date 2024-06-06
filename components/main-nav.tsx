@@ -21,7 +21,6 @@ interface MainNavProps {
 }
 
 export function MainNav({ items }: MainNavProps) {
-  debugger
   const router = useRouter()
   const [activeItem, setActiveItem] = useState('Home');
   const pathname = usePathname()
@@ -41,48 +40,48 @@ export function MainNav({ items }: MainNavProps) {
           <ul className="pt-2 grid gap-y-3">
             <li>
               <Link href='FortuneList' onClick={() => {
-                  setActiveItem('Fortune List')
-                }}
+                setActiveItem('Fortune List')
+              }}
               >
                 Fortune List
               </Link>
             </li>
             <li>
-              <Link href='ReleaseSpeed' onClick={() => {
-                  setActiveItem('Release Speed')
-                }}
+              <Link href='release-speed' onClick={() => {
+                setActiveItem('Release Speed')
+              }}
               >
                 Release Speed
               </Link>
             </li>
             <li>
               <Link href='monitoring-list' onClick={() => {
-                  setActiveItem('Monitoring')
-                }}
+                setActiveItem('Monitoring')
+              }}
               >
                 Monitoring
               </Link>
             </li>
             <li>
               <Link href='PSTStakingPrice' onClick={() => {
-                  setActiveItem('PST Staking Price')
-                }}
+                setActiveItem('PST Staking Price')
+              }}
               >
                 PST Staking Price
               </Link>
             </li>
             <li>
               <Link href='StakingRSIbonus' onClick={() => {
-                  setActiveItem('Staking RSI bonus')
-                }}
+                setActiveItem('Staking RSI bonus')
+              }}
               >
                 Staking RSI bonus
               </Link>
             </li>
             <li>
               <Link href='RSIDMCPrice' onClick={() => {
-                  setActiveItem('RSI/DMC Price')
-                }}
+                setActiveItem('RSI/DMC Price')
+              }}
               >
                 RSI/DMC Price
               </Link>
@@ -90,10 +89,10 @@ export function MainNav({ items }: MainNavProps) {
           </ul>
         </NavigationMenu.Content>
       </NavigationMenu.Item>
-      
+
       <NavigationMenu.Item className="relative pr-10 pt-4">
         <NavigationMenu.Trigger className="flex font-bold text-base">
-        Market Data<ChevronDown className="ml-2 mt-1" size="16px" aria-hidden />
+          Market Data<ChevronDown className="ml-2 mt-1" size="16px" aria-hidden />
         </NavigationMenu.Trigger>
         <NavigationMenu.Content className="absolute text-sm bg-stone-800 px-5 pt-3 mt-5 pb-5 w-40 left-200">
           <ul className="pt-2 grid gap-y-3">
