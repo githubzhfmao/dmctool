@@ -96,7 +96,14 @@ export function MainNav({ items }: MainNavProps) {
         </NavigationMenu.Trigger>
         <NavigationMenu.Content className="absolute text-sm bg-stone-800 px-5 pt-3 mt-5 pb-5 w-40 left-200">
           <ul className="pt-2 grid gap-y-3">
-            <li>Dex Pool</li>
+            <li>
+              <Link href='dex-pool' onClick={() => {
+                setActiveItem('Dex Pool')
+              }}
+              >
+                Dex Pool
+              </Link>
+            </li>
             <li>Price</li>
           </ul>
         </NavigationMenu.Content>
