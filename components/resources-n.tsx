@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input"
+import { Search } from 'lucide-react';
 
 export default function ResourcesN() {
   const { toast } = useToast()
@@ -314,45 +315,6 @@ export default function ResourcesN() {
       })
   }
 
-
-  const renderInfo = () => {
-    return (
-      <Card>
-        <CardHeader className="flex flex-row content-center items-center justify-start space-y-0">
-          <Input
-              className="h-9 xs:w-[200px] md:w-[300px] lg:w-[300px]"
-              value={searchText}
-              type="search"
-              placeholder="Search For An Account"
-              onKeyDown={handleEnterPress}
-              onChange={(e) => {
-                setSearchText(e?.target?.value?.trim())
-              }}
-            />
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="items-center">
-            <CardContent className="flex flex-row items-center justify-between space-y-0 pb-2 font-medium">
-              Account : {accountInfo?.account_name || ''}
-            </CardContent>
-            
-            {assetsList.map((e, index) => {
-              if (e?.balance?.quantity?.split(' ')[1] === 'DMC') {
-                return (
-                  <CardContent className="font-medium">
-                    Asserts : {numberToThousands(new BigNumber(e?.balance?.quantity?.split(' ')[0]).plus(dmcLockedkAmount).plus(dmcStakedTotal).toFixed(4, 1))}
-                  </CardContent>
-                )
-              }
-              return null
-            })}
-          </Card>
-        </CardContent>
-      </Card>
-    )
-  }
-
-
   const columns: any[] = [
     {
       accessorKey: "trx_id",
@@ -480,7 +442,7 @@ export default function ResourcesN() {
 
   const renderTrxList = () => {
     return (
-      <Card className="mt-5">
+      <Card className="mt-[70px] bg-[#131313]">
         <CardHeader className="flex flex-row content-center items-center justify-between space-y-0">
           <div className="flex flex-row items-center justify-center">
             <LayoutList className="mr-2 text-xl" />
@@ -503,10 +465,48 @@ export default function ResourcesN() {
       </Card>
     )
   }
+  // 搜索框
+  const searchBox = 
+    <div className="relative flex item-center justify-center w-[780px] ml-auto mr-auto color-[#868686]">
+      <Search className="absolute left-[44px] top-[11px] w-[20px] h-[20px]"  color="#868686"/>
+      <Input
+        type="search"
+        value={searchText}
+        placeholder="Search for an account"
+        className="pl-[82px] h-[40px] w-full rounded-full color-[#868686] bg-[#2A2A2A]"
+        onKeyDown={handleEnterPress}
+        onChange={(e) => {
+          setSearchText(e?.target?.value?.trim())
+        }}
+      />
+    </div>
+  // 账号信息
+  const monitoringList = 
+    <div className="flex justify-between item-center w-[396px] h-[90px] ml-auto mr-auto mt-[36px] bg-[#2A2A2A] rounded-3xl pl-[26px] pr-[26px] text-sm font-bold pt-[20px]">
+      <div>
+        <div>Account :  {accountInfo?.account_name || ''}</div>
+        {assetsList.map((e, index) => {
+          if (e?.balance?.quantity?.split(' ')[1] === 'DMC') {
+            return (
+              <div className="mt-[8px]">
+                Asserts : {numberToThousands(new BigNumber(e?.balance?.quantity?.split(' ')[0]).plus(dmcLockedkAmount).plus(dmcStakedTotal).toFixed(4, 1))} DMC
+                </div>
+            )
+          }
+          return null
+        })}
+      </div>
+      <Button
+        className="bg-[#f7b34e] text-[#1F1F1F] w-[60px] h-[21px] mt-[6px] rounded-full font-bold"
+      >
+        Monitor
+      </Button>
+    </div> 
 
   return (
     <section className="xs:w-screen sm:w-auto">
-      {renderInfo()}
+      {searchBox}
+      {monitoringList}
       {renderTrxList()}
     </section>
   )
