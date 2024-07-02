@@ -63,7 +63,7 @@ export function MainNav({ items }: MainNavProps) {
               </Link>
             </li>
             <li>
-              <Link href='PSTStakingPrice' onClick={() => {
+              <Link href='pst-stakingPrice' onClick={() => {
                 setActiveItem('PST Staking Price')
               }}
               >

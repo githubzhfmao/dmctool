@@ -477,7 +477,7 @@ export default function Overview() {
     )
   }
 
-  const renderCalculate = () => {
+  const renderCalculate = () => { 
     return (
       <Dialog>
         <DialogTrigger asChild>
